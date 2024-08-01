@@ -36,7 +36,7 @@ const createEditorial = async (req, res, next) => {
 
     const newEditorial = new Editorial(req.body);
     const editorialSaved = await newEditorial.save();
-    return res.status(200).json(editorialSaved);
+    return res.status(201).json(editorialSaved);
   } catch (error) {
     return res.status(400).json(`Error creating the Editorial: ${error}`);
   }
@@ -54,7 +54,7 @@ const updateEditorial = async (req, res, next) => {
       newEditorial,
       { new: true }
     );
-    return res.status(200).json(editorialUpdated);
+    return res.status(201).json(editorialUpdated);
   } catch (error) {
     return res.status(400).json(`Error updating the Editorial: ${error}`);
   }

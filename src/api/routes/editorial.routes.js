@@ -9,9 +9,9 @@ const {
 const editorialsRouter = require('express').Router();
 
 editorialsRouter.get('/', getEditorials);
-editorialsRouter.get('/:id', getEditorial);
-editorialsRouter.post('/', createEditorial);
-editorialsRouter.put('/:id', updateEditorial);
-editorialsRouter.delete('/:id', deleteEditorial);
+editorialsRouter.get('/get-editorial/:id', getEditorial);
+editorialsRouter.post('/create-editorial/', createEditorial);
+editorialsRouter.put('/update-editorial/:id', updateEditorial);
+editorialsRouter.delete('/delete-editorial/:id', deleteEditorial);
 
 module.exports = editorialsRouter;

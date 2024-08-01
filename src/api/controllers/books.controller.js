@@ -19,6 +19,23 @@ const getBook = async (req, res, next) => {
   }
 };
 
+const getBooksByPrice = async (req, res, next) => {
+  try {
+    const { minPrice, maxPrice } = req.query;
+
+    let query = {};
+
+    if (minPrice && maxPrice) {
+      query.price = { $gte: parseInt(minPrice), $lte: parseInt(maxPrice) };
+    }
+
+    const books = await Book.find(query);
+    return res.status(200).json(books);
+  } catch (error) {
+    return res.status(400).json(`Error getting books by price: ${error}`);
+  }
+};
+
 const createBook = async (req, res, next) => {
   try {
     const { title, editorial } = req.body;
@@ -74,6 +91,7 @@ const deleteBook = async (req, res, next) => {
 module.exports = {
   getBook,
   getBooks,
+  getBooksByPrice,
   createBook,
   updateBook,
   deleteBook,

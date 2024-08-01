@@ -32,7 +32,7 @@ const createAuthor = async (req, res, next) => {
 
     const newAuthor = new Author(req.body);
     const authorSaved = await newAuthor.save();
-    return res.status(200).json(authorSaved);
+    return res.status(201).json(authorSaved);
   } catch (error) {
     return res.status(400).json(`Error creating the author: ${error}`);
   }
@@ -48,7 +48,7 @@ const updateAuthor = async (req, res, next) => {
     const authorUpdated = await Author.findByIdAndUpdate(id, newAuthor, {
       new: true,
     });
-    return res.status(200).json(authorUpdated);
+    return res.status(201).json(authorUpdated);
   } catch (error) {
     return res.status(400).json(`Error updating the author: ${error}`);
   }
