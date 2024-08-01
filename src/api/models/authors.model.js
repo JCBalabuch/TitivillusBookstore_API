@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 const authorSchema = new mongoose.Schema(
   {
@@ -14,6 +15,18 @@ const authorSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+authorSchema.pre('save', async (next) => {
+  if (!this.id) {
+    this.id = uuidv4();
+
+    const existingAuthor = await Author.findOne({ id: this.id });
+    if (existingAuthor) {
+      throw new Error('Duplicate author ID generated. Please try again');
+    }
+  }
+  next();
+});
 
 const Author = mongoose.model('authors', authorSchema, 'authors');
 

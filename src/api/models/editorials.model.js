@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
 
 const editorialsSchema = new mongoose.Schema(
   {
@@ -17,6 +18,18 @@ const editorialsSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+editorialsSchema.pre('save', async (next) => {
+  if (!this.id) {
+    this.id = uuidv4();
+
+    const existingEditorial = await Editorial.findOne({ id: this.id });
+    if (existingEditorial) {
+      throw new Error('Duplicate editorial ID generated. Please try again');
+    }
+  }
+  next();
+});
 
 editorialsSchema.statics.updateEditorial = async (
   editorialId,
