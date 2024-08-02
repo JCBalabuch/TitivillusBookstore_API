@@ -18,6 +18,11 @@ const getEditorial = async (req, res, next) => {
     const editorial = await Editorial.findById(id)
       .populate('books')
       .populate('authors');
+
+    if (!editorial) {
+      return res.status(404).json('Editorial not found');
+    }
+
     return res.status(200).json(editorial);
   } catch (error) {
     return res.status(400).json(`Error getting the Editorial: ${error}`);
@@ -46,14 +51,18 @@ const updateEditorial = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const newEditorial = new Editorial(req.body);
-    newEditorial._id = id;
+    // const newEditorial = new Editorial(req.body);
+    // newEditorial._id = id;
 
-    const editorialUpdated = await Editorial.findByIdAndUpdate(
-      id,
-      newEditorial,
-      { new: true }
-    );
+    const editorialUpdated = await Editorial.findByIdAndUpdate(id, req.params, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!editorialUpdated) {
+      return res.status(404).json('Editorial not found');
+    }
+
     return res.status(201).json(editorialUpdated);
   } catch (error) {
     return res.status(400).json(`Error updating the Editorial: ${error}`);
@@ -65,6 +74,11 @@ const deleteEditorial = async (req, res, next) => {
     const { id } = req.params;
 
     const editorialDeleted = await Editorial.findByIdAndDelete(id);
+
+    if (!editorialDeleted) {
+      return res.status(404).json('Editorial nt found');
+    }
+
     return res.status(200).json({
       message: 'Editorial has been deleted',
       element: editorialDeleted,

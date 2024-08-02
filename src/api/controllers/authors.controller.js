@@ -14,6 +14,11 @@ const getAuthor = async (req, res, next) => {
     const { id } = req.params;
 
     const author = await Author.findById(id).populate('books');
+
+    if (!author) {
+      return res.status(404).json('Author not found');
+    }
+
     return res.status(200).json(author);
   } catch (error) {
     return res.status(400).json(`Error getting the author: ${error}`);
@@ -32,6 +37,7 @@ const createAuthor = async (req, res, next) => {
 
     const newAuthor = new Author(req.body);
     const authorSaved = await newAuthor.save();
+
     return res.status(201).json(authorSaved);
   } catch (error) {
     return res.status(400).json(`Error creating the author: ${error}`);
@@ -42,12 +48,11 @@ const updateAuthor = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const newAuthor = new Author(req.body);
-    newAuthor._id = id;
-
-    const authorUpdated = await Author.findByIdAndUpdate(id, newAuthor, {
+    const authorUpdated = await Author.findByIdAndUpdate(id, req.body, {
       new: true,
+      runValidators: true,
     });
+
     return res.status(201).json(authorUpdated);
   } catch (error) {
     return res.status(400).json(`Error updating the author: ${error}`);
@@ -59,6 +64,11 @@ const deleteAuthor = async (req, res, next) => {
     const { id } = req.params;
 
     const authorDeleted = await Author.findByIdAndDelete(id);
+
+    if (!authorDeleted) {
+      return res.status(404).json('Author not found');
+    }
+
     return res.status(200).json({
       message: 'Author has been deleted',
       element: authorDeleted,

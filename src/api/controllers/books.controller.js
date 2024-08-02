@@ -13,6 +13,11 @@ const getBook = async (req, res, next) => {
   try {
     const { id } = req.params;
     const book = await Book.findById(id);
+
+    if (!book) {
+      return res.status(404).json('Book not found');
+    }
+
     return res.status(200).json(book);
   } catch (error) {
     return res.status(400).json(`Error getting books: ${error}`);
@@ -63,12 +68,15 @@ const updateBook = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    const newBook = new Book(req.body);
-    newBook._id = id;
-
-    const bookUpdated = await Book.findByIdAndUpdate(id, newBook, {
+    const bookUpdated = await Book.findByIdAndUpdate(id, req.body, {
       new: true,
+      runValidators: true,
     });
+
+    if (!bookUpdated) {
+      return res.status(404).json('Book not found');
+    }
+
     return res.status(201).json(bookUpdated);
   } catch (error) {
     return res.status(400).json(`Error updating books: ${error}`);
@@ -78,7 +86,13 @@ const updateBook = async (req, res, next) => {
 const deleteBook = async (req, res, next) => {
   try {
     const { id } = req.params;
+
     const bookDeleted = await Book.findByIdAndDelete(id);
+
+    if (!bookDeleted) {
+      return res.status(404).json('Book not found');
+    }
+
     return res.status(200).json({
       message: 'Book has been deleted',
       element: bookDeleted,
