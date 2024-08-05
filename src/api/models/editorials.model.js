@@ -18,18 +18,6 @@ const editorialsSchema = new mongoose.Schema(
   }
 );
 
-// editorialsSchema.pre('save', async (next) => {
-//   if (!this.id) {
-//     this.id = uuidv4();
-
-//     const existingEditorial = await Editorial.findOne({ id: this.id });
-//     if (existingEditorial) {
-//       throw new Error('Duplicate editorial ID generated. Please try again');
-//     }
-//   }
-//   next();
-// });
-
 editorialsSchema.statics.updateEditorial = async (
   editorialId,
   updateEditorial

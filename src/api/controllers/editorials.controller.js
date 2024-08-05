@@ -51,9 +51,6 @@ const updateEditorial = async (req, res, next) => {
   try {
     const { id } = req.params;
 
-    // const newEditorial = new Editorial(req.body);
-    // newEditorial._id = id;
-
     const editorialUpdated = await Editorial.findByIdAndUpdate(id, req.params, {
       new: true,
       runValidators: true,

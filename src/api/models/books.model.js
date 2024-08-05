@@ -20,29 +20,6 @@ const bookSchema = new Schema(
   }
 );
 
-// bookSchema.pre('save', async (next) => {
-//   const existingBook = await Book.findOne({ idBook: this.idBook });
-//   if (existingBook) {
-//     console.log(existingBook);
-
-//     next(new Error('Duplicate book ID generated. Please try again'));
-//   } else {
-//     next();
-//   }
-// });
-
-// bookSchema.pre('save', async (next) => {
-//   if (!this.idBook) {
-//     this.idBook = uuidv4();
-
-//     const existingBook = await Book.findOne({ idBook: this.idBook });
-//     if (existingBook) {
-//       throw new Error('Duplicate book ID generated. Please try again');
-//     }
-//   }
-//   next();
-// });
-
 const Book = mongoose.model('books', bookSchema, 'books');
 
 module.exports = Book;
