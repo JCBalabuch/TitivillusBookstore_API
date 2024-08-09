@@ -66,7 +66,7 @@ const createBook = async (req, res, next) => {
     // Handle image upload
     if (req.file) {
       newBook.cover = req.file.path;
-      console.log(req.files);
+      console.log(req.file);
     }
 
     // Save the new book in the DB
