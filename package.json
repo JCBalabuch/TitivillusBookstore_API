@@ -7,18 +7,20 @@
     "dev": "nodemon index.js",
     "bookseed": "node src/utils/seeds/books.seed.js",
     "authorseed": "node src/utils/seeds/authors.seed.js",
-    "editorialseed": "node src/utils/seeds/editorials.seed.js",
-    "writefile": "node src/utils/handleFiles/handleFiles.js"
+    "editorialseed": "node src/utils/seeds/editorials.seed.js"
   },
   "keywords": [],
   "author": "JCBS",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "cloudinary": "^1.41.3",
     "csv-parser": "^3.0.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mongoose": "^8.5.1"
+    "mongoose": "^8.5.1",
+    "multer": "^1.4.5-lts.1",
+    "multer-storage-cloudinary": "^4.0.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

@@ -1,3 +1,4 @@
+const { deleteFile } = require('../../utils/deleteFiles');
 const Book = require('../models/books.model');
 
 const getBooks = async (req, res, next) => {
@@ -45,6 +46,7 @@ const createBook = async (req, res, next) => {
   try {
     const { title, editorial } = req.body;
 
+    // Verify if book already exist
     const existingBook = await Book.findOne({ title, editorial });
 
     if (existingBook) {
@@ -55,7 +57,19 @@ const createBook = async (req, res, next) => {
         );
     }
 
+    // Create a new book
     const newBook = new Book(req.body);
+
+    // console.log('controller l 61', req.file);
+    console.log('controller l 62', newBook);
+
+    // Handle image upload
+    if (req.file) {
+      newBook.cover = req.file.path;
+      console.log(req.files);
+    }
+
+    // Save the new book in the DB
     const bookSaved = await newBook.save();
 
     return res.status(201).json(bookSaved);
@@ -88,6 +102,8 @@ const deleteBook = async (req, res, next) => {
     const { id } = req.params;
 
     const bookDeleted = await Book.findByIdAndDelete(id);
+
+    deleteFile(bookDeleted.cover);
 
     if (!bookDeleted) {
       return res.status(404).json('Book not found');
