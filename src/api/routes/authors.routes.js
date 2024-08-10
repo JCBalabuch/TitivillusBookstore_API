@@ -1,3 +1,4 @@
+const upload = require('../../middlewares/uploadFiles');
 const {
   getAuthors,
   getAuthor,
@@ -10,7 +11,7 @@ const authorsRouter = require('express').Router();
 
 authorsRouter.get('/', getAuthors);
 authorsRouter.get('/get-author/:id', getAuthor);
-authorsRouter.post('/create-author', createAuthor);
+authorsRouter.post('/create-author', upload.single('photo'), createAuthor);
 authorsRouter.put('/update-author/:id', updateAuthor);
 authorsRouter.delete('/delete-author/:id', deleteAuthor);
 

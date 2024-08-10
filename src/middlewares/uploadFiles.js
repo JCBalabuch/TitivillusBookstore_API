@@ -1,7 +1,9 @@
+// Imports
 const cloudinary = require('cloudinary').v2;
 const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 
+// Function to upload images to Cloudinary
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
@@ -12,4 +14,5 @@ const storage = new CloudinaryStorage({
 
 const upload = multer({ storage });
 
+// Exports
 module.exports = upload;

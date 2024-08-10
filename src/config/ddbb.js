@@ -1,5 +1,7 @@
+// Imports
 const mongoose = require('mongoose');
 
+// Function to connect to Data Base
 const connectDDBB = async () => {
   try {
     await mongoose.connect(process.env.DDBB_URL);
@@ -10,4 +12,5 @@ const connectDDBB = async () => {
   }
 };
 
+// Exports
 module.exports = { connectDDBB };

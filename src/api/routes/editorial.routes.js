@@ -1,3 +1,4 @@
+const upload = require('../../middlewares/uploadFiles');
 const {
   getEditorials,
   getEditorial,
@@ -10,7 +11,11 @@ const editorialsRouter = require('express').Router();
 
 editorialsRouter.get('/', getEditorials);
 editorialsRouter.get('/get-editorial/:id', getEditorial);
-editorialsRouter.post('/create-editorial/', createEditorial);
+editorialsRouter.post(
+  '/create-editorial/',
+  upload.single('photo'),
+  createEditorial
+);
 editorialsRouter.put('/update-editorial/:id', updateEditorial);
 editorialsRouter.delete('/delete-editorial/:id', deleteEditorial);
 

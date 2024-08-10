@@ -1,5 +1,7 @@
+// Imports
 const cloudinary = require('cloudinary').v2;
 
+// Function to connect to Cloudinary
 const connectCloudinary = () => {
   try {
     cloudinary.config({
@@ -14,4 +16,5 @@ const connectCloudinary = () => {
   }
 };
 
+// Exports
 module.exports = { connectCloudinary };
