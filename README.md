@@ -12,7 +12,7 @@ Cloudinary, CSV-Parser, Dotenv, Express, Mongoose, Multer, Multer-Storage-Cloudi
 
 ## Files Structure
 
-[images\1.Files_Structure.png]
+[Files Structure](images\1.Files_Structure.png)
 
 ## Instalation
 
