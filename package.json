@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
+    "handleCSV": "node handleCSV.js",
     "bookseed": "node src/utils/seeds/books.seed.js",
     "authorseed": "node src/utils/seeds/authors.seed.js",
     "editorialseed": "node src/utils/seeds/editorials.seed.js"
