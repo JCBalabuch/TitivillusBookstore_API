@@ -78,17 +78,46 @@ const updateAuthor = async (req, res, next) => {
   try {
     // Collect the parameters to update the author
     const { id } = req.params;
+    const { name, biography, books, booksToRemove } = req.body;
 
-    const authorUpdated = await Author.findByIdAndUpdate(id, req.body, {
+    // Update simple fileds
+    const updateSimpleFiels = {
+      $set: {
+        name,
+        biography,
+      },
+    };
+
+    // Add new elements to books array
+    if (books !== undefined) {
+      updateSimpleFiels.$addToSet = { books: { $each: books } };
+    }
+
+    await Author.findByIdAndUpdate(id, updateSimpleFiels, {
+      new: true,
+      runValidators: true,
+    });
+
+    // Remove elements from books array
+    const updateBooksToRemove = {
+      $pullAll: { books: booksToRemove },
+    };
+    // if (booksToRemove) {
+    // }
+
+    await Author.findByIdAndUpdate(id, updateBooksToRemove, {
       new: true,
       runValidators: true,
     });
 
     // Handle image upload
     if (req.file) {
+      const authorUpdated = await Author.findById(id);
       authorUpdated.cover = req.file.path;
+      await authorUpdated.save();
     }
 
+    const authorUpdated = await Author.findById(id);
     // Checking if author doesn't exist
     if (!authorUpdated) {
       return res.status(404).json({ message: 'Author not found' });

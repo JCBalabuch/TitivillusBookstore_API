@@ -85,18 +85,71 @@ const updateEditorial = async (req, res, next) => {
   try {
     // Collect the parameters to update the editorial
     const { id } = req.params;
+    const {
+      name,
+      description,
+      country,
+      books,
+      booksToRemove,
+      authors,
+      authorsToRemove,
+    } = req.body;
 
-    const editorialUpdated = await Editorial.findByIdAndUpdate(id, req.params, {
+    // Update simple fields
+    const updateSimpleFields = {
+      $set: {
+        name,
+        description,
+        country,
+      },
+    };
+
+    // Add new books to editorial
+    if (books !== undefined) {
+      updateSimpleFields.$addToSet = { books: { $each: books } };
+    }
+
+    // Add new authors to editorial
+    if (authors !== undefined) {
+      updateSimpleFields.$addToSet = { authors: { $each: authors } };
+    }
+
+    await Editorial.findByIdAndUpdate(id, updateSimpleFields, {
       new: true,
       runValidators: true,
     });
 
+    // Remove books from the editorial
+    if (booksToRemove) {
+      const updateWhenBooksToRemove = {
+        $pullAll: { books: booksToRemove },
+      };
+      await Editorial.findByIdAndUpdate(id, updateWhenBooksToRemove, {
+        new: true,
+        runValidators: true,
+      });
+    }
+
+    // Remove authors from the editorial
+    if (authorsToRemove) {
+      const updateWhenAuthorsToRemove = {
+        $pullAll: { authors: authorsToRemove },
+      };
+      await Editorial.findByIdAndUpdate(id, updateWhenAuthorsToRemove, {
+        new: true,
+        runValidators: true,
+      });
+    }
+
     // Handle image upload
     if (req.file) {
+      const editorialUpdated = await Editorial.findById(id);
       editorialUpdated.logo = req.file.path;
+      await editorialUpdated.save();
     }
 
     // Checking if editorial doesn't exist
+    const editorialUpdated = await Editorial.findById(id);
     if (!editorialUpdated) {
       return res.status(404).json('Editorial not found');
     }
