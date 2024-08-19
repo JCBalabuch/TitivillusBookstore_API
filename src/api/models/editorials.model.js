@@ -15,6 +15,7 @@ const editorialsSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    collection: 'editorials',
   }
 );
 

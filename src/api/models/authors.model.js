@@ -12,6 +12,7 @@ const authorSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    collection: 'author',
   }
 );
 

@@ -17,6 +17,7 @@ const bookSchema = new Schema(
   },
   {
     timestamps: true,
+    collection: 'books',
   }
 );
 
