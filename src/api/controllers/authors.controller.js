@@ -102,8 +102,6 @@ const updateAuthor = async (req, res, next) => {
     const updateBooksToRemove = {
       $pullAll: { books: booksToRemove },
     };
-    // if (booksToRemove) {
-    // }
 
     await Author.findByIdAndUpdate(id, updateBooksToRemove, {
       new: true,

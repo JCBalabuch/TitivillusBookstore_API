@@ -124,6 +124,7 @@ const updateEditorial = async (req, res, next) => {
       const updateWhenBooksToRemove = {
         $pullAll: { books: booksToRemove },
       };
+
       await Editorial.findByIdAndUpdate(id, updateWhenBooksToRemove, {
         new: true,
         runValidators: true,
