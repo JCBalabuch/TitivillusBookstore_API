@@ -63,21 +63,7 @@ Start with the CSV files of the collections: books, authors and publishers, loca
 Run
 
 ```bash
-npm run handleCSV
-```
-
-Once the data for the seeds has been generated, the following commands must be executed consecutively
-
-```bash
-npm run bookseed
-```
-
-```bash
-npm run authorseed
-```
-
-```bash
-npm run editorialseed
+npm run releaseseeds
 ```
 
 ## Endpoints

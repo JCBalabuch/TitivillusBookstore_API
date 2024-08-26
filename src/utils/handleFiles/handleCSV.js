@@ -5,11 +5,6 @@ const Book = require('../../api/models/books.model');
 const Author = require('../../api/models/authors.model');
 const Editorial = require('../../api/models/editorials.model');
 
-// Declare empty arrays to store data from CSV files
-const booksData = [];
-const authorsData = [];
-const editorialData = [];
-
 // Paths to CSV files
 const booksURL = 'src/utils/handleFiles/TtvBS-BooksData.csv';
 const authorsURL = 'src/utils/handleFiles/TtvBS-AuthorsData.csv';
@@ -17,6 +12,7 @@ const editorialsURL = 'src/utils/handleFiles/TtvBS-EditorialsData.csv';
 
 // Function to read and process CSV data for Books
 const processBooks = async () => {
+  const booksData = [];
   return new Promise((resolve, reject) => {
     fs.createReadStream(booksURL)
       .pipe(csv({ separator: ';' }))
@@ -36,14 +32,15 @@ const processBooks = async () => {
         booksData.push(newBook);
       })
       .on('end', () => {
-        resolve();
+        resolve(booksData);
       })
       .on('error', (error) => reject(error));
   });
 };
 
 // Function to read and process CSV data for Authors
-const processAuthors = async () => {
+const processAuthors = async (booksData) => {
+  const authorsData = [];
   return new Promise((resolve, reject) => {
     fs.createReadStream(authorsURL)
       .pipe(csv({ separator: ';' }))
@@ -67,14 +64,15 @@ const processAuthors = async () => {
         authorsData.push(newAuthor);
       })
       .on('end', () => {
-        resolve();
+        resolve(authorsData);
       })
       .on('error', (error) => reject(error));
   });
 };
 
 // Function to read and process CSV data for Editorials
-const processEditorials = async () => {
+const processEditorials = async (booksData, authorsData) => {
+  const editorialData = [];
   return new Promise((resolve, reject) => {
     fs.createReadStream(editorialsURL)
       .pipe(csv({ separator: ';' }))
@@ -110,27 +108,11 @@ const processEditorials = async () => {
         editorialData.push(newEditorial);
       })
       .on('end', () => {
-        resolve();
+        resolve(editorialData);
       })
       .on('error', (error) => reject(error));
   });
 };
 
-// Main function to execute the processing in sequence
-const loadData = async () => {
-  try {
-    await processBooks();
-    await processAuthors();
-    await processEditorials();
-    console.log('Data loaded successfully!');
-  } catch (error) {
-    console.error('Error loading data:', error);
-  }
-  return { booksData, authorsData, editorialData };
-};
-
-// Execute the loading process
-loadData();
-
-// Export the filled arrays for use in other components
-module.exports = { booksData, authorsData, editorialData };
+// Export the functions for use in other components
+module.exports = { processBooks, processAuthors, processEditorials };
