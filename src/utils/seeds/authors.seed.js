@@ -11,17 +11,25 @@ const URL = process.env.DDBB_URL;
 mongoose
   .connect(URL)
   .then(async () => {
+    console.log('connected with MongoDB');
+
     // Search for all existing authors in the database and delete the entire collection
     const allAuthors = await Author.find();
     if (allAuthors.length) {
+      console.log('deleting data');
       await Author.collection.drop();
     }
+    console.log('Data deleted');
   })
   // Handling errors when deleting data
   .catch((error) => console.error(`Error deleting data: ${error}`))
   .then(async () => {
+    console.log('Inserting new data');
+
     // Insert authors data into the database
     await Author.insertMany(authorsData);
+    console.log('Data inserted');
+    console.log(authorsData);
   })
   // Handling errors when creating data
   .catch((error) => console.error(`Error creating data: ${error}`))
